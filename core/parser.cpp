@@ -32,5 +32,10 @@ void Parser::loadParams(int size, char* params[]) {
 				}
 			}
 		}
+		if (param == "w" || param == "c" || param == "z")
+		{
+			_mode = param;
+			std::cout << i << std::endl;
+		}
 	}
 }

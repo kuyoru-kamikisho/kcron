@@ -9,14 +9,14 @@ class Parser
 public:
 	const int _requireMin = 8;
 	int _outNum = 1;
-	char _mode;
-	char _year;
-	char _month;
-	char _day;
-	char _week;
-	char _hours;
-	char _minutes;
-	char _seconds;
+	std::string _mode;
+	int _year;
+	int _month;
+	int _day;
+	int _week;
+	int _hours;
+	int _minutes;
+	int _seconds;
 
 	void loadParams(int size, char* params[]);
 };
