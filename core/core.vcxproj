@@ -133,12 +133,14 @@
     <ClCompile Include="appInfo.cpp" />
     <ClCompile Include="array.cpp" />
     <ClCompile Include="core.cpp" />
+    <ClCompile Include="JDate.cpp" />
     <ClCompile Include="parser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="appInfo.h" />
     <ClInclude Include="array.h" />
     <ClInclude Include="cls.h" />
+    <ClInclude Include="JDate.h" />
     <ClInclude Include="parser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
