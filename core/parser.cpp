@@ -1,14 +1,15 @@
 #include "parser.h"
 #include "JDate.h"
+# include <iomanip>
 
 enum Step
 {
 	Y, M, D, w, h, m, s
 };
 
-void resolver(int* source, std::string value) {
+void Parser::resolver(int* source, std::string value) {
 	if (value == "-") {
-		*source = 0;
+		*source = _mode == "z" ? -1 : 0;
 	}
 	else
 	{
@@ -51,7 +52,6 @@ void Parser::loadParams(int size, char* params[]) {
 		if (param == "w" || param == "c" || param == "z")
 		{
 			_mode = param;
-			std::cout << i << std::endl;
 			step = Step::Y;
 			continue;
 		}
@@ -90,23 +90,103 @@ void Parser::loadParams(int size, char* params[]) {
 		}
 	}
 
-	time_t currentTime = time(nullptr);
+	JDate date;
 
-	if (_mode == "w")
+	int Y = date.getYear();
+	int M = date.getMonth();
+	int D = date.getDate();
+	int w = date.getDay();
+	int h = date.getHours();
+	int m = date.getMinutes();
+	int s = date.getSeconds();
+
+	std::cout << "当前时间：\n"
+		<< Y
+		<< "-"
+		<< M + 1
+		<< "-"
+		<< D
+		<< " 周"
+		<< w
+		<< " "
+		<< h
+		<< ":"
+		<< m
+		<< ":"
+		<< s
+		<< "\n"
+		<< std::endl;
+
+	std::cout << std::left
+		<< std::setw(8) << "年"
+		<< std::setw(8) << "月"
+		<< std::setw(8) << "日"
+		<< std::setw(8) << "周"
+		<< std::setw(8) << "时"
+		<< std::setw(8) << "分"
+		<< std::setw(8) << "秒"
+		<< std::endl;
+
+	for (size_t i = 0; i < _outNum; i++)
 	{
-		// 等待模式只执行一次，会忽略掉 --list 参数
-		JDate date;
-		auto a = date.getDate();
-		std::cout << a << std::endl;
-		date.setMinutes(15840);
-		auto b = date.getMilliseconds();
-		std::cout << a << std::endl;
-	}
-	else if (_mode == "c") {
+		if (_mode == "w" || _mode == "c")
+		{
+			s = date.getSeconds();
+			date.setSeconds(s + _seconds);
 
-	}
-	else if (_mode == "z")
-	{
+			m = date.getMinutes();
+			date.setMinutes(m + _minutes);
 
+			h = date.getHours();
+			date.setHours(h + _hours);
+
+			D = date.getDate();
+			date.setDate(D + _day + _week * 7);
+
+			M = date.getMonth();
+			date.setMonth(M + _month);
+
+			Y = date.getYear();
+			date.setYear(Y + _year);
+		}
+		else if (_mode == "z")
+		{
+			if (_year > -1)
+			{
+				date.setYear(_year);
+			}
+			if (_month > -1)
+			{
+				date.setMonth(_month - 1);
+			}
+			if (_day > -1)
+			{
+				if (_week > -1)
+				{
+					date.setDate(1);
+					while (date.getNumWeek() != _week)
+					{
+						date.setDate(date.getDate() + 1);
+					}
+					while (date.getDay() != _day)
+					{
+						date.setDate(date.getDate() + 1);
+					}
+				}
+				else {
+					date.setDate(_day);
+				}
+			}
+		}
+
+		std::cout << std::left
+			<< std::setw(8) << date.getYear()
+			<< std::setw(8) << date.getMonth() + 1
+			<< std::setw(8) << date.getDate()
+			<< std::setw(8) << date.getDay()
+			<< std::setw(8) << date.getHours()
+			<< std::setw(8) << date.getMinutes()
+			<< std::setw(8) << date.getSeconds()
+			<< std::endl;
 	}
 }

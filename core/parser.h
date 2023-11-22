@@ -19,4 +19,5 @@ public:
 	int _seconds;
 
 	void loadParams(int size, char* params[]);
+	void resolver(int* source, std::string value);
 };

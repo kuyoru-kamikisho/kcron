@@ -64,31 +64,28 @@ public:
 
 		return milliseconds;
 	}
-	void setYear(int v) {
-		_ctm.tm_year = v - 1900;
-		setDate(getDate());
-	};
-	void setMonth(int v) {
-		if (v > 11)
-		{
-			_ctm.tm_mon = v / 11 - 1;
-			setYear(v % 11 + getYear());
-		}
-		else {
-			_ctm.tm_mon = v;
-		}
-	};
-	void setDate(int v) {
-		int mday = getMdayNum(getYear(), getMonth());
-		if (v > mday)
-		{
-			setMonth(getMonth() + 1);
-			setDate(v - mday);
-		}
-		else {
-			_ctm.tm_mday = v;
-		}
-	};
+
+	/// <summary>
+	/// 获得当前日期处于该月的第几周
+	/// </summary>
+	int getNumWeek() {
+		return (_ctm.tm_mday + getDayOfFirst() - 1) / 7 + 1;
+	}
+
+	/// <summary>
+	/// 获取当月第一天的星期
+	/// </summary>
+	int getDayOfFirst() {
+		tm t = makeT(_ctm.tm_year, _ctm.tm_mon, 1);
+		return t.tm_wday;
+	}
+
+	/// <summary>
+	/// 获取某年某月的总天数
+	/// </summary>
+	/// <param name="y">年份</param>
+	/// <param name="m">月份</param>
+	/// <returns>该月的总天数</returns>
 	int getMdayNum(int y, int m) {
 		bool leap = isLeapYear(y);
 		int mday = 30;
@@ -108,6 +105,51 @@ public:
 		}
 		return mday;
 	}
+
+	/// <summary>
+	/// 设置年份
+	/// </summary>
+	/// <param name="v">只接受大于等于0的整数</param>
+	void setYear(int v) {
+		_ctm.tm_year = v - 1900;
+		setDate(getDate());
+	};
+	/// <summary>
+	/// 设置月份
+	/// </summary>
+	/// <param name="v">只接受大于等于0的整数</param>
+	void setMonth(int v) {
+		if (v > 11)
+		{
+			_ctm.tm_mon = v / 11 - 1;
+			setYear(v % 11 + getYear());
+		}
+		else {
+			_ctm.tm_mon = v;
+		}
+	};
+	/// <summary>
+	/// 设置日期
+	/// </summary>
+	/// <param name="v">只接受大于等于0的整数</param>
+	void setDate(int v) {
+		int mday = getMdayNum(getYear(), getMonth());
+		if (v > mday)
+		{
+			setMonth(getMonth() + 1);
+			setDate(v - mday);
+		}
+		else {
+			tm t = makeT(_ctm.tm_year, _ctm.tm_mon, v);
+			_ctm.tm_mday = v;
+			_ctm.tm_wday = t.tm_wday;
+		}
+	};
+
+	/// <summary>
+	/// 设置小时
+	/// </summary>
+	/// <param name="v">只接受大于等于0的整数</param>
 	void setHours(int v) {
 		if (v > 23)
 		{
@@ -118,6 +160,11 @@ public:
 			_ctm.tm_hour = v;
 		}
 	};
+
+	/// <summary>
+	/// 设置分钟
+	/// </summary>
+	/// <param name="v">只接受大于等于0的整数</param>
 	void setMinutes(int v) {
 		if (v > 59)
 		{
@@ -128,6 +175,11 @@ public:
 			_ctm.tm_min = v;
 		}
 	};
+
+	/// <summary>
+	/// 设置秒数
+	/// </summary>
+	/// <param name="v">只接受大于等于0的整数</param>
 	void setSeconds(int v) {
 		if (v > 59)
 		{
@@ -138,8 +190,29 @@ public:
 			_ctm.tm_sec = v;
 		}
 	};
+
+	/// <summary>
+	/// 是否是闰年
+	/// </summary>
+	/// <param name="year">年份</param>
+	/// <returns>布尔值</returns>
 	bool isLeapYear(int year) {
 		return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+	}
+
+	/// <summary>
+	/// 创建标准日期
+	/// </summary>
+	/// <param name="y">年</param>
+	/// <param name="m">月</param>
+	/// <param name="d">日</param>
+	tm makeT(int y, int m, int d) {
+		tm timeStruct = { 0 };
+		timeStruct.tm_year = y;
+		timeStruct.tm_mon = m;
+		timeStruct.tm_mday = d;
+		mktime(&timeStruct);
+		return timeStruct;
 	}
 };
 

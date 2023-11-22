@@ -11,6 +11,8 @@ std::string AppInfo::help = R"(
 	the year, month, day, week, hour, minute, 
 	and second must be written in order, 
 	these parameters must all be numbers.
+	The flag "w" and "c" serve the same purpose, 
+	just to facilitate the distinction.
 
 [-h] or [--help] 
 	Show the help info.
