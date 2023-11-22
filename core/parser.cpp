@@ -20,6 +20,7 @@ void Parser::resolver(int* source, std::string value) {
 void Parser::loadParams(int size, char* params[]) {
 	int step = -1;
 	std::string param;
+	JDate date;
 	for (int i = 0; i < size; i++)
 	{
 		param = params[i];
@@ -67,11 +68,17 @@ void Parser::loadParams(int size, char* params[]) {
 				step = Step::D;
 				break;
 			case Step::D:
-				resolver(&_day, param);
+				if (_mode == "z" && param == "+")
+					resolver(&_day, date.getMdayNum(_year, _month) + "");
+				else
+					resolver(&_day, param);
 				step = Step::w;
 				break;
 			case Step::w:
-				resolver(&_week, param);
+				if (_mode == "z" && params[i - 1] == "+")
+					resolver(&_week, -1 + "");
+				else
+					resolver(&_week, param);
 				step = Step::h;
 				break;
 			case Step::h:
@@ -89,8 +96,6 @@ void Parser::loadParams(int size, char* params[]) {
 			}
 		}
 	}
-
-	JDate date;
 
 	int Y = date.getYear();
 	int M = date.getMonth();
@@ -176,6 +181,22 @@ void Parser::loadParams(int size, char* params[]) {
 				else {
 					date.setDate(_day);
 				}
+			}
+			if (_hours > -1)
+			{
+				date.setHours(_hours);
+			}
+			if (_minutes > -1)
+			{
+				date.setMinutes(_minutes);
+			}
+			if (_seconds > -1)
+			{
+				date.setSeconds(_seconds);
+			}
+			else
+			{
+				date.setSeconds(date.getSeconds() + 1);
 			}
 		}
 
