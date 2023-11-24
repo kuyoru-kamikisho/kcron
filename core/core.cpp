@@ -12,6 +12,6 @@ int main(int argc, char* argv[])
 	}
 	else
 	{
-		std::cout << "No parameters passed" << std::endl;
+		std::cout << "No parameters passed." << std::endl;
 	}
 }

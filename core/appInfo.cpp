@@ -1,6 +1,6 @@
 #include "appInfo.h"
 
-std::string AppInfo::version = "kcron version 0.0.1";
+std::string AppInfo::version = "kcron version 0.1.0";
 std::string AppInfo::author = "Copyright (c) 2023 kuyoru";
 std::string AppInfo::source = "https://github.com/kuyoru-kamikisho/kcron";
 std::string AppInfo::help = R"(

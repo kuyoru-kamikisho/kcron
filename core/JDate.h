@@ -83,10 +83,12 @@ public:
 	/// <summary>
 	/// 获取某年某月的总天数
 	/// </summary>
-	/// <param name="y">年份</param>
-	/// <param name="m">月份</param>
+	/// <param name="y">年份，小于1的值代表当年</param>
+	/// <param name="m">月份，小于0的值代表当月</param>
 	/// <returns>该月的总天数</returns>
 	int getMdayNum(int y, int m) {
+		y = y < 1 ? _ctm.tm_year : y;
+		m = m < 0 ? _ctm.tm_mon : m;
 		bool leap = isLeapYear(y);
 		int mday = 30;
 		if (m == 0 || m == 2 || m == 4 || m == 6 || m == 7 || m == 9 || m == 11)
