@@ -1,11 +1,11 @@
-#include "appInfo.h"
+ï»¿#include "appInfo.h"
 
 std::string AppInfo::version = "kcron version 0.1.0";
 std::string AppInfo::author = "Copyright (c) 2023 kuyoru";
 std::string AppInfo::source = "https://github.com/kuyoru-kamikisho/kcron";
 std::string AppInfo::help = R"(
 [w] or [z] or [c] 
-	Flags£¬represents the delay time, period interval,
+	Flagsï¼Œrepresents the delay time, period interval,
 	and clock scale respectively.
 	After this parameter, 
 	the year, month, day, week, hour, minute, 

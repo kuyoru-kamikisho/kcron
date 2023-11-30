@@ -1,4 +1,4 @@
-#include "parser.h"
+ï»¿#include "parser.h"
 #include "JDate.h"
 # include <iomanip>
 
@@ -107,13 +107,13 @@ void Parser::loadParams(int size, char* params[]) {
 	int m = date.getMinutes();
 	int s = date.getSeconds();
 
-	std::cout << "µ±Ç°Ê±¼ä£º\n"
+	std::cout << "å½“å‰æ—¶é—´ï¼š\n"
 		<< Y
 		<< "-"
 		<< M + 1
 		<< "-"
 		<< D
-		<< " ÖÜ"
+		<< " å‘¨"
 		<< w
 		<< " "
 		<< h
@@ -125,13 +125,13 @@ void Parser::loadParams(int size, char* params[]) {
 		<< std::endl;
 
 	std::cout << std::left
-		<< std::setw(8) << "Äê"
-		<< std::setw(8) << "ÔÂ"
-		<< std::setw(8) << "ÈÕ"
-		<< std::setw(8) << "ÖÜ"
-		<< std::setw(8) << "Ê±"
-		<< std::setw(8) << "·Ö"
-		<< std::setw(8) << "Ãë"
+		<< std::setw(8) << "å¹´"
+		<< std::setw(8) << "æœˆ"
+		<< std::setw(8) << "æ—¥"
+		<< std::setw(8) << "å‘¨"
+		<< std::setw(8) << "æ—¶"
+		<< std::setw(8) << "åˆ†"
+		<< std::setw(8) << "ç§’"
 		<< std::endl;
 
 	int initStep = _seconds < 0 ? 7 :
@@ -202,7 +202,7 @@ void Parser::loadParams(int size, char* params[]) {
 					bool b = n > 11;
 					canlog = !b;
 					date.setMonth(b ? 0 : n);
-					addStep = b ? 1 : initStep; // 1´ú±íÏòÄêÀÛ¼Ó
+					addStep = b ? 1 : initStep; // 1ä»£è¡¨å‘å¹´ç´¯åŠ 
 					if (addStep > 2)
 					{
 						addStep = 7;
@@ -273,7 +273,7 @@ void Parser::loadParams(int size, char* params[]) {
 						{
 							n = date.getDate() + 1;
 							b = n > date.getMdayNum(date.getYear(), date.getMonth());
-							addStep = b ? 2 : initStep; // 2´ú±íÏòÔÂÀÛ¼Ó
+							addStep = b ? 2 : initStep; // 2ä»£è¡¨å‘æœˆç´¯åŠ 
 							date.setDate(b ? 1 : n);
 							canlog = !b;
 						}
@@ -299,7 +299,7 @@ void Parser::loadParams(int size, char* params[]) {
 					bool b = n > 23;
 					canlog = !b;
 					date.setHours(b ? 0 : n);
-					addStep = b ? 3 : initStep; // 3´ú±íÏòÈÕÀÛ¼Ó
+					addStep = b ? 3 : initStep; // 3ä»£è¡¨å‘æ—¥ç´¯åŠ 
 					if (addStep > 5)
 					{
 						addStep = 7;
@@ -322,7 +322,7 @@ void Parser::loadParams(int size, char* params[]) {
 					bool b = n > 59;
 					canlog = !b;
 					date.setMinutes(b ? 0 : n);
-					addStep = b ? 5 : initStep; // 5´ú±íÏòĞ¡Ê±ÀÛ¼Ó
+					addStep = b ? 5 : initStep; // 5ä»£è¡¨å‘å°æ—¶ç´¯åŠ 
 					if (addStep > 6)
 					{
 						addStep = 7;
@@ -344,7 +344,7 @@ void Parser::loadParams(int size, char* params[]) {
 					bool b = n > 59;
 					canlog = !b;
 					date.setSeconds(b ? 0 : n);
-					addStep = b ? 6 : initStep; // 6´ú±íÏò·ÖÖÓÀÛ¼Ó
+					addStep = b ? 6 : initStep; // 6ä»£è¡¨å‘åˆ†é’Ÿç´¯åŠ 
 				}
 			}
 		}
