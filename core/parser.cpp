@@ -1,5 +1,6 @@
 ﻿#include "parser.h"
 #include "JDate.h"
+#include "lang.h"
 # include <iomanip>
 
 enum Step
@@ -107,13 +108,16 @@ void Parser::loadParams(int size, char* params[]) {
 	int m = date.getMinutes();
 	int s = date.getSeconds();
 
-	std::cout << "当前时间：\n"
+	std::cout << Lang::get("now").zh 
+		<< Lang::get("colon").zh 
+		<< "\n"
 		<< Y
 		<< "-"
 		<< M + 1
 		<< "-"
 		<< D
-		<< " 周"
+		<< " " 
+		<< Lang::get("week").zh
 		<< w
 		<< " "
 		<< h
@@ -125,13 +129,13 @@ void Parser::loadParams(int size, char* params[]) {
 		<< std::endl;
 
 	std::cout << std::left
-		<< std::setw(8) << "年"
-		<< std::setw(8) << "月"
-		<< std::setw(8) << "日"
-		<< std::setw(8) << "周"
-		<< std::setw(8) << "时"
-		<< std::setw(8) << "分"
-		<< std::setw(8) << "秒"
+		<< std::setw(8) << Lang::get("year").zh
+		<< std::setw(8) << Lang::get("month").zh
+		<< std::setw(8) << Lang::get("date").zh
+		<< std::setw(8) << Lang::get("week").zh
+		<< std::setw(8) << Lang::get("hour").zh
+		<< std::setw(8) << Lang::get("minute").zh
+		<< std::setw(8) << Lang::get("second").zh
 		<< std::endl;
 
 	int initStep = _seconds < 0 ? 7 :
@@ -245,7 +249,7 @@ void Parser::loadParams(int size, char* params[]) {
 					}
 					else
 					{
-						int n;bool b;
+						int n; bool b;
 
 						if (_week > -1) {
 							if (date.getDay() == _week)

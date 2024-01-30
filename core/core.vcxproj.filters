@@ -30,6 +30,12 @@
     <ClCompile Include="JDate.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="lang.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="setLang.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="parser.h">
@@ -45,6 +51,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="JDate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lang.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="setLang.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
