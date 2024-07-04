@@ -120,3 +120,7 @@ z - - + - 0 0 0
 ### z标记
 
 ![z](./imgs/z标记演示.gif)
+
+## DLL库
+
+如果您有使用dll库的需求，可以转到该项目的 [dll](https://github.com/kuyoru-kamikisho/kcron/tree/dll) 分支。
