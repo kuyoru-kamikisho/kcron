@@ -5,6 +5,9 @@
 
 #include <windows.h>
 
+/// <summary>
+/// 擦除控制台
+/// </summary>
 void clearScreen() {
 	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
 	COORD coord = { 0, 0 };
