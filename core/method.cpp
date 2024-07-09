@@ -13,10 +13,18 @@ KCronTime_C* parseTimeString(const char* timeStr, int lineNums)
 
 	int params[8] = { 0,0,0,0,0,0,0,0 };
 	int param_index = -1;
+	bool mark_add = false;
+	bool month_mved = false;
 
 	char* next_token = NULL;
 	char* timeStrCopy = _strdup(timeStr);
 	char* token = strtok_s(timeStrCopy, " ", &next_token);
+
+	time_t T;
+	struct tm newTime;
+	time(&T);
+	localtime_s(&newTime, &T);
+
 	while (token != NULL) {
 		param_index += 1;
 		char* tmpStr = token;
@@ -43,11 +51,14 @@ KCronTime_C* parseTimeString(const char* timeStr, int lineNums)
 		}
 		else if (strcmp(tmpStr, "+") == 0)
 		{
-			if (strcmp(tmpStr, "z") == 0 && param_index == 3)
+			if (params[0] == 200 && param_index == 3)
 			{
-				params[param_index] = getDaysInMonth(params[1], params[1]);
-				// + 标识符存在的情况下星期设置将无效
+				mark_add = true;
+				// + 标识符存在的情况下星期设置将被跳过
+				params[param_index] = 15;
 				param_index++;
+				params[4] = -100;
+				token = strtok_s(NULL, " ", &next_token);
 			}
 			else {
 				fprintf(stderr, "Mark [+] can only be used in [z] flag and must be placed at [day] index.");
@@ -60,24 +71,34 @@ KCronTime_C* parseTimeString(const char* timeStr, int lineNums)
 
 	if (param_index != 7)
 	{
-		std::string errorMessage = "Invalid string length, your input length is " + std::to_string(param_index + 1) + ".\n";
+		std::string errorMessage = "Invalid string length, the params length your inputed is " + std::to_string(param_index + 1) + ".\n";
 		fprintf(stderr, errorMessage.c_str());
 		return NULL;
 	}
 
-	time_t T;
-	struct tm newTime;
-	time(&T);
-	localtime_s(&newTime, &T);
-
 	for (size_t i = 0; i < lineNums; i++)
 	{
 		tm resultSingle;
-		if (params[0] == 100)
+		if (params[0] == 100 || params[0] == 300)
 		{
 			resultSingle = timeAfter(&newTime, params[1], params[2], params[3], params[4], params[5], params[6], params[7]);
 		}
-		else if (params[0] == 200 || params[0] == 300) {
+		else if (params[0] == 200) {
+			if (mark_add)
+			{
+				int a = params[1] > 0 ? params[1] : newTime.tm_year + 1900;
+				int b = params[2] > 0 ? params[2] : newTime.tm_mon + 1;
+				if (!month_mved && params[2] <= 0 && params[5] >= 0 && params[6] >= 0 && params[7] >= 0)
+				{
+					newTime.tm_mon -= 1;
+					month_mved = true;
+				}
+				else
+				{
+					b++;
+				}
+				params[3] = getDaysInMonth(a, b);
+			}
 			resultSingle = timeAt(&newTime, params[1], params[2], params[3], params[4], params[5], params[6], params[7]);
 		}
 		array[i].Y = resultSingle.tm_year + 1900;
@@ -113,13 +134,34 @@ tm timeAfter(struct tm* T, int Y, int M, int D, int w, int h, int m, int s)
 
 tm timeAt(tm* T, int Y, int M, int D, int w, int h, int m, int s)
 {
-	if (Y > 0)
+	if (s >= 0)
 	{
-		T->tm_year = Y - 1900;
+		T->tm_sec = s;
 	}
-	if (M > 0)
+	else {
+		T->tm_sec += 1;
+	}
+	if (m >= 0)
 	{
-		T->tm_mon = M - 1;
+		T->tm_min = m;
+	}
+	else
+	{
+		if (s >= 0)
+		{
+			T->tm_min += 1;
+		}
+	}
+	if (h >= 0)
+	{
+		T->tm_hour = h;
+	}
+	else
+	{
+		if (s >= 0 && m >= 0)
+		{
+			T->tm_hour += 1;
+		}
 	}
 	if (w <= 0)
 	{
@@ -127,46 +169,42 @@ tm timeAt(tm* T, int Y, int M, int D, int w, int h, int m, int s)
 		{
 			T->tm_mday = D;
 		}
+		else
+		{
+			T->tm_mday += 1;
+		}
 	}
 	else
 	{
 		if (D > 0)
 		{
 			// 当星期与日两个参数同时不为空时，日将转换为星期几，星期将转换为第几个星期
-			T->tm_mday = getDateByYMwd(T->tm_year, T->tm_mon, w, D);
+			T->tm_mday = getDateByYMwd(T->tm_year + 1900, T->tm_mon + 1, w, D);
 		}
 		else {
 			T->tm_wday = w - 1;
 		}
 	}
-	mktime(T);
-	if (s > 0)
+	if (M > 0)
 	{
-		T->tm_sec = s;
-	}
-	else {
-		T->tm_sec += 1;
-	}
-	if (m > 0)
-	{
-		T->tm_min = m;
+		T->tm_mon = M - 1;
 	}
 	else
 	{
-		if (s > 0)
+		if (s >= 0 && m >= 0 && h >= 0 && (w > 0 || D > 0))
 		{
-			T->tm_min += 1;
+			T->tm_mon += 1;
 		}
 	}
-	if (h > 0)
+	if (Y > 0)
 	{
-		T->tm_hour = h;
+		T->tm_year = Y - 1900;
 	}
 	else
 	{
-		if (s > 0 && m > 0)
+		if (s >= 0 && m >= 0 && h >= 0 && (w > 0 || D > 0) && M > 0)
 		{
-			T->tm_hour += 1;
+			T->tm_year += 1;
 		}
 	}
 	mktime(T);

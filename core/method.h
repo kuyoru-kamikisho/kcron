@@ -80,7 +80,7 @@ extern "C" KCRON_API int getDaysInMonth(int year, int month);
 /// </summary>
 /// <param name="year">年份</param>
 /// <param name="month">月份[1-31]</param>
-/// <param name="week">星期，月份的第几周[1-5]</param>
+/// <param name="week">星期，月份的第N轮7日循环，与星期数无关[1-5]</param>
 /// <param name="weekday">星期几[1-7]</param>
 /// <returns>[1-31]</returns>
-extern "C" KCRON_API int getDateByYMwd(int year, int month,int weekNum,int weekday);
+extern "C" KCRON_API int getDateByYMwd(int year, int month, int weekNum, int weekday);
