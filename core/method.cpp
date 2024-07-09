@@ -171,7 +171,10 @@ tm timeAt(tm* T, int Y, int M, int D, int w, int h, int m, int s)
 		}
 		else
 		{
-			T->tm_mday += 1;
+			if (s >= 0 && m >= 0 && h >= 0)
+			{
+				T->tm_mday += 1;
+			}
 		}
 	}
 	else
@@ -182,7 +185,19 @@ tm timeAt(tm* T, int Y, int M, int D, int w, int h, int m, int s)
 			T->tm_mday = getDateByYMwd(T->tm_year + 1900, T->tm_mon + 1, w, D);
 		}
 		else {
-			T->tm_wday = w - 1;
+			// 假如现在周三（2），要求周五 5 差2天 5-3
+			// 假如现在周三（2），要求周一 1 差5天 1+7-3
+			// 假如现在周三（2），要求周三 3 差0天
+			auto x = T->tm_wday;
+			auto a = w >= x ? w - x : w + 7 - x;
+			if (a == 0 && h >= 0 && m >= 0 && s >= 0)
+			{
+				T->tm_mday += 7;
+			}
+			else
+			{
+				T->tm_mday += a;
+			}
 		}
 	}
 	if (M > 0)
@@ -191,7 +206,7 @@ tm timeAt(tm* T, int Y, int M, int D, int w, int h, int m, int s)
 	}
 	else
 	{
-		if (s >= 0 && m >= 0 && h >= 0 && (w > 0 || D > 0))
+		if (s >= 0 && m >= 0 && h >= 0 && D > 0)
 		{
 			T->tm_mon += 1;
 		}
@@ -202,7 +217,7 @@ tm timeAt(tm* T, int Y, int M, int D, int w, int h, int m, int s)
 	}
 	else
 	{
-		if (s >= 0 && m >= 0 && h >= 0 && (w > 0 || D > 0) && M > 0)
+		if (s >= 0 && m >= 0 && h >= 0 && D > 0 && M > 0)
 		{
 			T->tm_year += 1;
 		}
