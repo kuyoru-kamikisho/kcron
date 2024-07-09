@@ -2,6 +2,13 @@
 
 kcron是一个定时任务字符串解析器，它没有传统crontab那样的学习曲线，因此很容易使用。
 
+
+## <font color="red">DLL库</font>
+
+<font color="green">如果您有使用**dll库**的需求，可以转到该项目的 [dll](https://github.com/kuyoru-kamikisho/kcron/tree/dll) 分支。</font>
+
+## 介绍
+
 kcron是一个控制台程序，它接收以下参数：
 
 ```text
@@ -29,7 +36,9 @@ kcron是一个控制台程序，它接收以下参数：
 
 ```
 
-## w、c标记
+## 标记
+
+### w、c标记
 
 ```shell
 
@@ -58,7 +67,7 @@ c - - 45 - - - -
 
 ```
 
-## z标记
+### z标记
 
 ```shell
 
@@ -120,7 +129,3 @@ z - - + - 0 0 0
 ### z标记
 
 ![z](./imgs/z标记演示.gif)
-
-## DLL库
-
-如果您有使用dll库的需求，可以转到该项目的 [dll](https://github.com/kuyoru-kamikisho/kcron/tree/dll) 分支。
