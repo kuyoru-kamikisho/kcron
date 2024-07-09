@@ -8,6 +8,12 @@
 
 ### parseTimeString
 
+您可以通过下面的简单指引来了解如何调用库函数，
+也可以查看专门编写的 [测试文件](./test/test.cpp)
+来了解更详细的调用方式。
+
+下面的代码是 `parseTimeString` 库函数的基础定义：
+
 ```c++
 typedef struct KCronTime_C
 {
@@ -25,8 +31,10 @@ typedef struct KCronTime_C
 extern "C" KCRON_API KCronTime_C* parseTimeString(const char* timeStr, int lineNums);
 ```
 
-示例：
+使用示例：
 
 ```c++
-parseTimeString("w - - - - - - -", 10);
+auto x = parseTimeString("w - - - - - - -", 10);
+printf("year is %d\n",x[0].Y);
+printf("year is %d\n",x[1].Y);
 ```
