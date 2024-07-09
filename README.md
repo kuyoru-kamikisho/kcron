@@ -4,7 +4,12 @@
 参数规范与使用[EXE应用程序](https://github.com/kuyoru-kamikisho/kcron)的方式十分类似，
 只不过从命令行变成了函数调用。
 
-## 函数
+## 下载库函数
+
+前往 [Release](https://github.com/kuyoru-kamikisho/kcron/releases) 页进行下载，
+您也可以根据您的系统自行构建
+
+## 函数列表
 
 ### parseTimeString
 
@@ -38,3 +43,7 @@ auto x = parseTimeString("w - - - - - - -", 10);
 printf("year is %d\n",x[0].Y);
 printf("year is %d\n",x[1].Y);
 ```
+
+### 其它函数
+
+其他函数的使用说明请参见 [头文件](./core//method.h)
